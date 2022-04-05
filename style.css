@@ -1,0 +1,22 @@
+body{
+    padding-top: 80px;
+}
+.icon{
+    margin-left: 200px;
+}
+
+.account{
+    margin-right: 200px;
+}
+.navbar{
+    height: 80px;
+}
+
+.carousel-item{
+    height: 500px;
+}
+
+.mainpage-cards{
+    background-color: #ebebeb;
+    
+}
