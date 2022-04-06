@@ -221,6 +221,7 @@ function showButtons(){
     createButton("SUV")+createButton("Segment-S");
 }
 
+listAll();
 showButtons();
 
 
@@ -286,11 +287,11 @@ function createCar(myCar){
                     <h5 class="fw-bolder card-title">${myCar.title}</h5>
                     <p class="card-text">${myCar.desc}</p>
                 </div>
-                <h6 class="price">${myCar.price}</h6>
+                <h6 class="price text-center">${myCar.price}</h6>
             </div>
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                <div>Button returns none for now</div>
+                <div class="text-center">Button returns none for now</div>
             </div>
         </div>
     </div>
