@@ -1,3 +1,7 @@
+
+
+// For Cars.html page
+
 const menu = [
     {
         id: 1,
@@ -294,7 +298,20 @@ function createCar(myCar){
                 <div class="text-center">Button returns none for now</div>
             </div>
         </div>
-    </div>
-                    `
+    </div>`
 
+}
+
+function relocate_Admin(){
+    location.href = "admin-login.html";
+}
+
+loginDOM = document.querySelector('#loginWindow');
+
+function popUpLogin(){
+    if(loginDOM.classList.contains('show')){
+        loginDOM.classList.remove('show');
+    }else{
+        loginDOM.classList.add('show');
+    }
 }

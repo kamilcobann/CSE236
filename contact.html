@@ -12,65 +12,145 @@
   </head>
   <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-success p-2 text-white bg-opacity-75 fixed-top">
-            <div class="container-fluid">
-                <a class="navbar-brand icon" href="main.html">
-                    <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
-                  </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item mx-3">
-                    <a class="nav-link" aria-current="page" href="main.html">VınVın</a>
-                  </li>
-                  <li class="nav-item mx-3">
-                    <a class="nav-link" href="cars.html">Cars</a>
-                  </li>
-                  <li class="nav-item mx-3">
-                      <a href="contact.html" class="nav-link">Contact</a>
-                  </li>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
+          <div class="container-fluid">
+              <a class="navbar-brand icon" href="main.html">
+                  <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
+                </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item mx-3">
+                  <a class="nav-link text-white" aria-current="page" href="main.html">VınVın</a>
+                </li>
+                <li class="nav-item mx-3">
+                  <a class="nav-link text-white" href="cars.html">Cars</a>
+                </li>
+                <li class="nav-item mx-3">
+                    <a href="contact.html" class="nav-link text-white">Contact</a>
+                </li>
+                
+              </ul>
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
+                  <li class="nav-item">
+                      <div class="btn text-white" onclick="popUpLogin()">Login</div>
+                      <div class="dropdown-menu action-form" id="loginWindow">
+                        <div class="container text-center">
+                          <p class="mt-3">Login as Admin</p>
+                          <input type="button" value="Admin" class="btn btn-outline-success" onclick="relocate_Admin()">
+                        </div>
+                        <form action="#" method="post">
                   
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account">
-                    <li class="nav-item">
-                        <div class="btn">Log In</div>
+                          <div class="text-center mt-3"><b>or</b></div>
+                          <div class="form-group my-3 mx-3">
+                            <input type="email" class="form-control" placeholder="Email" required="required" name="email" id="email">
+                          </div>
+                          <div class="form-group mb-3 mx-3">
+                            <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password">
+                          </div>
+                          <div class="mb-3 ms-3 form-check">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                              <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
+                            </div>
+                          <div class="form-group float-start mb-3 mx-3">
+                            <a href="cars.html" class="btn">Forgot Password?</a>
+                          </div>
+                          <div class="form-group float-end mb-3 me-3">
+                            <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
+                          </div>
+                        </form>
+                      </div>
                     </li>
-                    <li class="nav-item">
-                        <div class="btn">Sign Up</div>
-                    </li>
-                </ul>
-              </div>
+                  <li class="nav-item">
+                      <div class="btn text-white">Sign Up</div>
+                  </li>
+              </ul>
             </div>
-        </nav>
+          </div>
+      </nav>
 
         <div class="container">
           <div class="row">
             
             <div class="col-sm-8 mt-5">
-                <div class="col-sm-8">
-                  <h4 class="my-3">Contact Numbers</h4>
-                  <ul class="list-group list-group-flush bg-transparent my-3">
-                    <li class="list-group-item list-group-item-action list-group-item-secondary">Kaş : 055555555555</li>
-                    <li class="list-group-item list-group-item-action list-group-item-secondary">Kemer : 06666666666</li>
-                    <li class="list-group-item list-group-item-action list-group-item-secondary">Konyaaltı : 02222222222</li>
-                    <li class="list-group-item list-group-item-action list-group-item-secondary">Manavgat : 02331654664</li>
-                  </ul>
-                </div>              
-                <div class="col-sm-8 my-5">
-                  <p>
-                    You can reach us 24 hours a day, 7 days a week through our VınVın Communication Center line at numbers. You can book a car rental from our Contact Center, reach our roadside assistance line, and send us all your requests, suggestions, opinions and questions that you want to share.
-                  </p>
+              <div class="col-sm-8">
+                <h3 class="my-3">FAQ's</h3>
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        I'd like to change my reservation. How can I do that?
+                      </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        Actions such as changing the car group or adding additional services to your approved reservations cannot be performed through vinvin.com.tr and our mobile website. Guests who wish to make changes to their reservation must contact our call center at 055555555 or our respective office. You can review the VınVın rental agreement document for change rules.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        How long can I rent for at least? I'll return the car later in the day, how much do I pay?
+                      </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        The shortest car rental period is 24 hours. For leases that last less than 1 day (24 hours), the daily rental fee is charged.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Can I rent a car with points accumulated on my credit card?
+                      </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        As VınVın Turkey, we do not have a car rental application with points accumulated on the credit card.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        How can I cancel my reservation?
+                      </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        You can submit your cancellation request by entering your reservation number and email address in the Reservation Cancellation Request tab under the Online Reservation header at the top of VınVın.com.trhome page. You can also cancel your reservation through our call center at 0555555555. Note that if there is is less than 24 hours to the pick-up time of your rental or if the car is not picked up without canceling the reservation, a deduction is applied to the refund of the rental price. For details of cancellation rules, you can review the details of the VınVın Car Rental Agreement.
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-sm-8">
-                  <div style="width: 100%"><iframe width="100%" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=500&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/marine-gps/">ship tracker</a></iframe></div>
-                </div>
+              </div>
+              
+              <div class="col-sm-8">
+                <h4 class="my-3">Contact Numbers</h4>
+                <ul class="list-group list-group-flush bg-transparent my-3">
+                  <li class="list-group-item list-group-item-action list-group-item-secondary">Kaş : 055555555555</li>
+                  <li class="list-group-item list-group-item-action list-group-item-secondary">Kemer : 06666666666</li>
+                  <li class="list-group-item list-group-item-action list-group-item-secondary">Konyaaltı : 02222222222</li>
+                  <li class="list-group-item list-group-item-action list-group-item-secondary">Manavgat : 02331654664</li>
+                </ul>
+              </div>              
+              <div class="col-sm-8 my-5">
+                <p>
+                  You can reach us 24 hours a day, 7 days a week through our VınVın Communication Center line at numbers. You can book a car rental from our Contact Center, reach our roadside assistance line, and send us all your requests, suggestions, opinions and questions that you want to share.
+                </p>
+              </div>
+              <div class="col-sm-8">
+                <div style="width: 100%"><iframe width="100%" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=500&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/marine-gps/">ship tracker</a></iframe></div>
+              </div>
               
 
             </div>
           <div class="col-sm-4 my-5">
-                <div class="container my-3">
+                <div class="container my-3 emailForm">
                   <h3 class="text-center mb-3">Send an Email</h3>
                   <form class="mb-3" method="POST" action="kamil.cobann.0@gmail.com" enctype="multipart/form-data" name="mailForm">
                     <label for="fname" class="form-label mb-3">First Name</label>
@@ -83,10 +163,8 @@
                     <input type="email" class="form-control" name="email" id="email">
                     <label for="message" class="form-label my-3">Message</label>
                     <textarea name="message" id="message" cols="3" class="form-control"></textarea>
-                    
-                      <button class="btn btn-success btn-outline-warning float-end my-3" type="submit">Send</button>
-                    
-                  
+                    <button class="btn btn-success btn-outline-warning float-end my-3" type="submit">Send</button>
+
                   </form>
                 </div>
               </div>
@@ -116,7 +194,7 @@
           </footer>
         </div>
 
-
+    <script src="contact.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
   </body>

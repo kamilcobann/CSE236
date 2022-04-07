@@ -38,3 +38,11 @@ header{
     position: relative;
 
 }
+.emailForm{
+    position: sticky;
+    top: 80px;
+}
+
+.accordion-button{
+    font-weight: bold;
+}
