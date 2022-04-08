@@ -13,3 +13,7 @@ function popUpLogin(){
         loginDOM.classList.add('show');
     }
 }
+
+function redirectRegister(){
+    location.href="register.html";
+}

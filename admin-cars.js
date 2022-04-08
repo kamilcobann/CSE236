@@ -1,7 +1,3 @@
-
-
-// For Cars.html page
-
 const menu = [
     {
         id: 1,
@@ -229,14 +225,12 @@ const menu = [
         "https://cdn.motor1.com/images/mgl/qjRXZ/s1/audi-r8-v10-decennium.webp",
         desc : `Supercar`,
         fuel : Math.floor(Math.random() * 100) + 1
-    },
-    
-
+    }    
 ]
 
 
-let menuContainer = document.querySelector('.section-center');
-let buttonContainer = document.querySelector('.btn-container');
+filterButtonsDOM = document.querySelector('.filterButtons');
+tableBodyDOM = document.querySelector('#table-body');
 
 function createButton(btnName){
     return `<div id="${btnName}" class="btn btn-outline-dark me-2 my-3">${btnName}
@@ -244,10 +238,9 @@ function createButton(btnName){
 }
 
 function showButtons(){
-    buttonContainer.innerHTML = createButton("All-Cars")+createButton("Segment-B")+createButton("Segment-C")+
+    filterButtonsDOM.innerHTML = createButton("All-Cars")+createButton("Segment-B")+createButton("Segment-C")+
     createButton("SUV")+createButton("Segment-S");
 }
-
 listAll();
 showButtons();
 
@@ -263,7 +256,7 @@ function listAll(){
     menu.map((e)=>{
         content+=createCar(e);
     })
-    menuContainer.innerHTML = content;
+    tableBodyDOM.innerHTML = content;
 }
 
 function listB(){
@@ -273,7 +266,7 @@ function listB(){
             content+=createCar(e);
         }
     });
-    menuContainer.innerHTML = content;
+    tableBodyDOM.innerHTML = content;
 }
 function listC(){
     let content = " ";
@@ -282,7 +275,7 @@ function listC(){
             content+=createCar(e);
         }
     });
-    menuContainer.innerHTML = content;
+    tableBodyDOM.innerHTML = content;
 }
 function listSUV(){
     let content = " ";
@@ -291,7 +284,7 @@ function listSUV(){
             content+=createCar(e);
         }
     });
-    menuContainer.innerHTML = content;
+    tableBodyDOM.innerHTML = content;
 }
 
 function listS(){
@@ -301,44 +294,73 @@ function listS(){
             content+=createCar(e);
         }
     });
-    menuContainer.innerHTML = content;
+    tableBodyDOM.innerHTML = content;
 }
+
+function addItem(){
+
+}
+
 
 function createCar(myCar){
     return `
-    <div class="col mb-5">
-        <div class="card h-100">
-            <img class="card-img-top" src="${myCar.img}" alt="${myCar.title}">
-            <div class="card-body p-4">
-                <div class="text-center">
-                    <h5 class="fw-bolder card-title">${myCar.title}</h5>
-                    <p class="card-text">${myCar.desc}</p>
-                </div>
-                <h6 class="price text-center">${myCar.price}</h6>
-            </div>
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                <div class="text-center">Button returns none for now</div>
-            </div>
-        </div>
-    </div>`
-
+    <tr>
+        <th scope="col">${myCar.id}</th>
+        <td><img src="${myCar.img}" width="200px" height="100px"></td>
+        <td>${myCar.title}</td>
+        <td>${myCar.price}</td>
+        <td>${myCar.fuel}</td>
+        <td>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editItem()">
+        Edit
+        </button>
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editModalLabel">Edit Car</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          ((I WILL WRITE A FUNCTION))
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteItem()">
+        Delete
+        </button>
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalLabel">Delete Car</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure that you want to delete this Car?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        </td>
+    </tr>
+    `;
 }
 
-function relocate_Admin(){
-    location.href = "admin-login.html";
-}
+// MODAL ADD DELETE EDIT
 
-loginDOM = document.querySelector('#loginWindow');
+var myModal = document.getElementById('myModal')
+var myInput = document.getElementById('myInput')
 
-function popUpLogin(){
-    if(loginDOM.classList.contains('show')){
-        loginDOM.classList.remove('show');
-    }else{
-        loginDOM.classList.add('show');
-    }
-}
-
-function redirectRegister(){
-    location.href="register.html";
-}
+myModal.addEventListener('shown.bs.modal', function () {
+  myInput.focus()
+})
