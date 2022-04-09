@@ -311,7 +311,7 @@ function createCar(myCar){
         <td>${myCar.price}</td>
         <td>${myCar.fuel}</td>
         <td>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editItem()">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal" >
         Edit
         </button>
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -326,12 +326,12 @@ function createCar(myCar){
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
+                          <button type="button" class="btn btn-primary" onclick="editItem()">Save changes</button>
                         </div>
                       </div>
                     </div>
                   </div>
-        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteItem()">
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
         Delete
         </button>
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -346,7 +346,7 @@ function createCar(myCar){
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-danger">Delete</button>
+                          <button type="button" class="btn btn-danger" onclick="deleteItem()">Delete</button>
                         </div>
                       </div>
                     </div>
