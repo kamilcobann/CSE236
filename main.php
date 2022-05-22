@@ -1,3 +1,57 @@
+<?php
+  session_start();
+
+  if(isset($_SESSION["loggedin"])&& $_SESSION["loggedin"]===true){
+    header("Location:registered-main.php");
+    exit;
+  }
+
+  require_once('connect.php');
+
+  $email = $password = "";
+  $email_err = $password_err = $login_err = "";
+
+  if($_SERVER["REQUEST_METHOD"]=="POST"){
+    if(empty(trim($_POST["email"]))){
+      $email_err = "Please enter an email";
+    }else{
+      $email = trim($_POST["email"]);
+    }
+
+    if(empty(trim($_POST["password"]))){
+      $password_err = "Please enter an password";
+    }else{
+      $password = trim($_POST["password"]);
+    }
+
+    if(empty($email_err) && empty($password_err)){
+      $sql = "SELECT * FROM users WHERE email ='$email'";
+      $result = mysqli_query($conn,$sql);
+      $count = mysqli_num_rows($result);
+      if($count > 0){
+        while($row = $result->fetch_assoc()){
+          if($row['password']==md5($password)){
+            $_SESSION["UID"] = $row['UID'];
+            $_SESSION["firstname"] = $row['firstname'];
+            $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["loggedin"] = true;
+            
+
+          }else{
+            $password_err = "Password is wrong";
+
+          }
+        }
+      }else{
+        $login_err="Invalid Account";
+      }
+      header("Location:main.php");
+    }
+  }
+  
+?>
+
+
 <!doctype html>
 <html lang="tr">
   <head>
@@ -41,7 +95,7 @@
                       <p class="mt-3">Login as Admin</p>
                       <input type="button" value="Admin" class="btn btn-outline-success" onclick="relocate_Admin()">
                     </div>
-                    <form action="registered-main.html" method="">
+                    <form action="registered-main.php" method="post">
               
                       <div class="text-center mt-3"><b>or</b></div>
                       <div class="form-group my-3 mx-3">
