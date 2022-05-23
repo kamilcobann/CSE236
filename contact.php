@@ -1,3 +1,55 @@
+<?php
+  session_start();
+
+  if(isset($_GET["logout"])){
+    session_destroy();
+    header('Location:main.php');
+  }
+  require_once('connect.php');
+
+  $email = $password = "";
+  $email_err = $password_err = $login_err = "";
+
+  if($_SERVER["REQUEST_METHOD"]=="POST"){
+    if(empty(trim($_POST["email"]))){
+      $email_err = "Please enter an email";
+    }else{
+      $email = trim($_POST["email"]);
+    }
+
+    if(empty(trim($_POST["password"]))){
+      $password_err = "Please enter an password";
+    }else{
+      $password = trim($_POST["password"]);
+    }
+
+    if(empty($email_err) && empty($password_err)){
+      $sql = "SELECT * FROM users WHERE email ='$email'";
+      $result = mysqli_query($conn,$sql);
+      $count = mysqli_num_rows($result);
+      if($count > 0){
+        while($row = $result->fetch_assoc()){
+          if($row['password']==md5($password)){
+            $_SESSION["UID"] = $row['UID'];
+            $_SESSION["firstname"] = $row['firstname'];
+            $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["loggedin"] = true;
+
+
+          }else{
+            $password_err = "Password is wrong";
+
+          }
+        }
+      }else{
+        $login_err="Invalid Account";
+      }
+      header("Location:main.php");
+    }
+  }
+  
+?>
+
 <!doctype html>
 <html lang="tr">
   <head>
@@ -13,63 +65,86 @@
   <body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
-          <div class="container-fluid">
-              <a class="navbar-brand icon" href="main.html">
-                  <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
-                </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item mx-3">
-                  <a class="nav-link text-white" aria-current="page" href="main.html">VınVın</a>
-                </li>
-                <li class="nav-item mx-3">
-                  <a class="nav-link text-white" href="cars.html">Cars</a>
-                </li>
-                <li class="nav-item mx-3">
-                    <a href="contact.html" class="nav-link text-white">Contact</a>
-                </li>
-                
-              </ul>
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
-                  <li class="nav-item">
-                      <div class="btn text-white" onclick="popUpLogin()">Login</div>
-                      <div class="dropdown-menu action-form" id="loginWindow">
-                        <div class="container text-center">
-                          <p class="mt-3">Login as Admin</p>
-                          <input type="button" value="Admin" class="btn btn-outline-success" onclick="relocate_Admin()">
-                        </div>
-                        <form action="registered-main.html" method="">
-                  
-                          <div class="text-center mt-3"><b>or</b></div>
-                          <div class="form-group my-3 mx-3">
-                            <input type="email" class="form-control" placeholder="Email" required="required" name="email" id="email">
-                          </div>
-                          <div class="form-group mb-3 mx-3">
-                            <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password">
-                          </div>
-                          <div class="mb-3 ms-3 form-check">
-                              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                              <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
-                            </div>
-                          <div class="form-group float-start mb-3 mx-3">
-                            <a href="cars.html" class="btn">Forgot Password?</a>
-                          </div>
-                          <div class="form-group float-end mb-3 me-3">
-                            <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
-                          </div>
-                        </form>
+      <div class="container-fluid">
+          <a class="navbar-brand icon" href="main.html">
+              <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
+            </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item mx-3">
+              <a class="nav-link text-white" aria-current="page" href="main.php">VınVın</a>
+            </li>
+            <li class="nav-item mx-3">
+              <a class="nav-link text-white" href="cars.php">Cars</a>
+            </li>
+            <li class="nav-item mx-3">
+                <a href="contact.php" class="nav-link text-white">Contact</a>
+            </li>
+            
+          </ul>
+          <?php  if(isset($_SESSION["loggedin"])&& $_SESSION["loggedin"]===true){?>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
+              <li class="nav-item">
+              <a href="main.php?logout" class="mt-2 me-2 btn text-white">Sign out</a>
+              </li>
+              <li class="nav-item">
+                  <p class="mt-3 me-3">User</p>
+              </li>
+              <li>
+              <img
+              width="50px"
+              height="50px"
+                  class="admin-icon mt-2 rounded-circle "
+                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="">
+              </li>
+              
+          </ul>
+          <?php }else { ?>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
+              <li class="nav-item">
+                  <div class="btn text-white" onclick="popUpLogin()">Login</div>
+                  <div class="dropdown-menu action-form" id="loginWindow">
+                    <div class="container text-center">
+                      <p class="mt-3">Login as Admin</p>
+                      <input type="button" value="Admin" class="btn btn-outline-success" onclick="relocate_Admin()">
+                    </div>
+                    <form method="post">
+              
+                      <div class="text-center mt-3"><b>or</b></div>
+                      <div class="form-group my-3 mx-3">
+                        <input type="email" class="form-control" placeholder="Email" required="required" name="email" id="email"
+                        <?php echo (!empty($email_err)) ? 'is-invalid' : ''  ?>value="<?php echo $email?>" >
+                        <span><?php echo $email_err; ?></span>
+
                       </div>
-                    </li>
-                  <li class="nav-item">
-                      <div class="btn text-white" onclick="redirectRegister()">Sign Up</div>
-                  </li>
-              </ul>
-            </div>
-          </div>
-      </nav>
+                      <div class="form-group mb-3 mx-3">
+                        <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password" <?php echo (!empty($password_err)) ? 'is-invalid' : ''  ?>value="<?php echo $password?>" >
+                        <span><?php echo $password_err; ?></span>
+                      </div>
+                      <div class="mb-3 ms-3 form-check">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                          <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
+                        </div>
+                      <div class="form-group float-start mb-3 mx-3">
+                        <a href="cars.html" class="btn">Forgot Password?</a>
+                      </div>
+                      <div class="form-group float-end mb-3 me-3">
+                        <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
+                      </div>
+                    </form>
+                  </div>
+                </li>
+              <li class="nav-item">
+                  <div class="btn text-white" onclick="redirectRegister()">Sign Up</div>
+              </li>
+          </ul>
+          <?php } ?>
+        </div>
+      </div>
+  </nav>
         <div class="container">
           <div class="row">
             
