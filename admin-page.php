@@ -13,7 +13,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-bottom">
       <div class="container-fluid">
-          <a class="navbar-brand icon" href="admin-page.html">
+          <a class="navbar-brand icon" href="admin-page.php">
               <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
             </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,17 +22,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item mx-3">
-              <a class="nav-link text-white" href="admin-cars.html">Cars</a>
+              <a class="nav-link text-white" href="admin-cars.php">Cars</a>
             </li>
             <li class="nav-item mx-3">
-              <a class="nav-link text-white" href="admin-users.html">Users</a>
+              <a class="nav-link text-white" href="admin-users.php">Users</a>
             </li>
             
 
           </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
               <li class="nav-item">
-                  <a href="main.html" class="mt-2 me-2 btn text-white">Sign out</a>
+                  <a href="main.php" class="mt-2 me-2 btn text-white">Sign out</a>
               </li>
               <li class="nav-item">
                   <p class="mt-3 me-3">Admin</p>
@@ -60,7 +60,7 @@
                 <p class="float-end mt-2">975</p>
               </div>
               <div class="text-center mt-5">
-              <a href="admin-users.html" class="btn btn-primary">Go to Users</a>
+              <a href="admin-users.php" class="btn btn-primary">Go to Users</a>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@
                 <p class="float-end mt-2">10</p>
               </div>
               <div class="text-center mt-5">
-              <a href="admin-users.html" class="btn btn-primary">Go to Reservations</a>
+              <a href="admin-users.php" class="btn btn-primary">Go to Reservations</a>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
                 <p class="float-end mt-2">20</p>
               </div>
               <div class="text-center mt-5">
-              <a href="admin-cars.html" class="btn btn-primary">Go to Cars</a>
+              <a href="admin-cars.php" class="btn btn-primary">Go to Cars</a>
               </div>
             </div>
           </div>

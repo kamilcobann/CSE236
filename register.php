@@ -1,4 +1,4 @@
-<?php
+ <?php
 require_once('connect.php');
 
 $firstname = $lastname = $email = $password = $password_check = $licence = $gender = $bod = "";
@@ -127,7 +127,7 @@ function validator($data){
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
       <div class="container-fluid">
-          <a class="navbar-brand icon" href="main.html">
+          <a class="navbar-brand icon" href="main.php">
               <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
             </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,13 +136,13 @@ function validator($data){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item mx-3">
-              <a class="nav-link text-white" aria-current="page" href="main.html">VınVın</a>
+              <a class="nav-link text-white" aria-current="page" href="main.php">VınVın</a>
             </li>
             <li class="nav-item mx-3">
-              <a class="nav-link text-white" href="cars.html">Cars</a>
+              <a class="nav-link text-white" href="cars.php">Cars</a>
             </li>
             <li class="nav-item mx-3">
-                <a href="contact.html" class="nav-link text-white">Contact</a>
+                <a href="contact.php" class="nav-link text-white">Contact</a>
             </li>
             
           </ul>
@@ -168,7 +168,7 @@ function validator($data){
                           <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
                         </div>
                       <div class="form-group float-start mb-3 mx-3">
-                        <a href="cars.html" class="btn">Forgot Password?</a>
+                        <a href="cars.php" class="btn">Forgot Password?</a>
                       </div>
                       <div class="form-group float-end mb-3 me-3">
                         <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
@@ -260,14 +260,14 @@ function validator($data){
     <div class="container">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <p class="col-md-4 mb-0 text-muted">© 2021 Company, Inc</p>
-        <a href="main.html">
+        <a href="main.php">
         <img src="/images/car.png" width="40px" height="40px" alt="">
       </a>
         <ul class="nav col-md-4 justify-content-end">
-          <li class="nav-item"><a href="main.html" class="nav-link px-2 text-muted">Home</a></li>
-          <li class="nav-item"><a href="cars.html" class="nav-link px-2 text-muted">Cars</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">FAQs</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">About</a></li>
+          <li class="nav-item"><a href="main.php" class="nav-link px-2 text-muted">Home</a></li>
+          <li class="nav-item"><a href="cars.php" class="nav-link px-2 text-muted">Cars</a></li>
+          <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">FAQs</a></li>
+          <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">About</a></li>
         </ul>
       </footer>
     </div>

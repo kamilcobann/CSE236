@@ -1,3 +1,82 @@
+<?php
+
+$admin_email = $admin_password = $email = $password = "";
+$admin_email_err = $admin_password_err = $email_err = $password_err = "";
+require_once('connect.php');
+
+  session_start();
+  if($_SESSION["adminloggedin"]==true){
+    header("Location:admin-page.php");
+  }
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if(empty(trim($_POST["email"]))){
+      $email_err = "Please enter an email.";
+    }else{
+      $email = trim($_POST["email"]);
+    }
+
+    if(empty(trim($_POST["password"]))){
+      $password_err = "Please enter your password";
+    }else{
+      $password = trim($_POST["password"]);
+    }
+
+    if(empty(trim($_POST["adminEmail"]))){
+      $admin_email_err = "Please enter your email";
+    }else{
+      $admin_email = trim($_POST["adminEmail"]);
+    }
+
+    if(empty(trim($_POST["adminPassword"]))){
+      $admin_password_err = "Please enter your password";
+    }else{
+      $admin_password_err = trim($_POST["adminPassword"]);
+    }
+
+    if(empty($email_err) && empty($password_err)){
+      $sql = "SELECT * FROM users WHERE email ='$email'";
+      $result = mysqli_query($conn,$sql);
+      $count = mysqli_num_rows($result);
+      if($count > 0){
+        while($row = $result->fetch_assoc()){
+          if($row['password']==md5($password)){
+            $_SESSION["UID"] = $row['UID'];
+            $_SESSION["firstname"] = $row['firstname'];
+            $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["adminloggedin"] = true;
+          }else{
+            $password_err = "Password is wrong";
+          }
+        }
+
+      }else{
+        $login_err = "Invalid Account";
+      }
+      header("Location:admin-login.php");
+    }elseif(empty($admin_email_err) && empty($admin_password_err)){
+      $sql = "SELECT * FROM admin WHERE email='$admin_email'";
+      $result = mysqli_query($conn,$sql);
+      $count = mysqli_num_rows($result);
+      if($count>0){
+        while($row=$result->fetch_assoc()){
+          if($row['password']==md5($admin_password)){
+            $_SESSION["adminID"] = $row['adminID'];
+            $_SESSION["firstname"] = $row['firstname'];
+            $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["loggedin"] = true;
+          }
+
+        }
+      }else{
+        $login_err = "Invalid Account";
+      }
+      header("Location:admin-login.php");
+    }
+
+  }
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,7 +93,7 @@
       <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand icon" href="main.html">
+            <a class="navbar-brand icon" href="main.php">
                 <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
               </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,13 +102,13 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item mx-3">
-                <a class="nav-link text-white" aria-current="page" href="main.html">VınVın</a>
+                <a class="nav-link text-white" aria-current="page" href="main.php">VınVın</a>
               </li>
               <li class="nav-item mx-3">
-                <a class="nav-link text-white" href="cars.html">Cars</a>
+                <a class="nav-link text-white" href="cars.php">Cars</a>
               </li>
               <li class="nav-item mx-3">
-                  <a href="contact.html" class="nav-link text-white">Contact</a>
+                  <a href="contact.php" class="nav-link text-white">Contact</a>
               </li>
               
             </ul>
@@ -55,7 +134,7 @@
                             <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
                           </div>
                         <div class="form-group float-start mb-3 mx-3">
-                          <a href="cars.html" class="btn">Forgot Password?</a>
+                          <a href="cars.php" class="btn">Forgot Password?</a>
                         </div>
                         <div class="form-group float-end mb-3 me-3">
                           <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
@@ -78,7 +157,7 @@
         <div class="row mt-5">
             <div class="col-sm-10 offset-1">
                 <div class="col-sm-8 offset-2 bg-white">
-                    <form method="" class="" action="admin-page.html">
+                    <form method="" class="" action="admin-page.php">
                         <div class="mb-3">
                           <label for="adminEmail" class="form-label">Email address</label>
                           <input type="email" class="form-control" id="adminEmail" aria-describedby="emailHelp">
@@ -104,14 +183,14 @@
     <div class="container fixed-bottom">
         <footer class=" d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <p class="col-md-4 mb-0 text-muted">© 2021 Company, Inc</p>
-          <a href="main.html">
+          <a href="main.php">
           <img src="/images/car.png" width="40px" height="40px" alt="">
         </a>
           <ul class="nav col-md-4 justify-content-end">
-            <li class="nav-item"><a href="main.html" class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="cars.html" class="nav-link px-2 text-muted">Cars</a></li>
-            <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">About</a></li>
+            <li class="nav-item"><a href="main.php" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="cars.php" class="nav-link px-2 text-muted">Cars</a></li>
+            <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">About</a></li>
           </ul>
         </footer>
       </div>

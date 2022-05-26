@@ -13,5 +13,5 @@ function popUpLogin(){
 }
 
 function redirectRegister(){
-    location.href="register.html";
+    window.location = ('register.php') 
 }

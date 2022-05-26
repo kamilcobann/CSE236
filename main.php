@@ -67,7 +67,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
       <div class="container-fluid">
-          <a class="navbar-brand icon" href="main.html">
+          <a class="navbar-brand icon" href="main.php">
               <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
             </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,7 +130,7 @@
                           <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
                         </div>
                       <div class="form-group float-start mb-3 mx-3">
-                        <a href="cars.html" class="btn">Forgot Password?</a>
+                        <a href="cars.phpmain.php" class="btn">Forgot Password?</a>
                       </div>
                       <div class="form-group float-end mb-3 me-3">
                         <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
@@ -277,14 +277,14 @@
     <div class="container">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <p class="col-md-4 mb-0 text-muted">© 2021 Company, Inc</p>
-        <a href="main.html">
+        <a href="main.php">
         <img src="images/car.png" width="40px" height="40px" alt="">
       </a>
         <ul class="nav col-md-4 justify-content-end">
-          <li class="nav-item"><a href="main.html" class="nav-link px-2 text-muted">Home</a></li>
-          <li class="nav-item"><a href="cars.html" class="nav-link px-2 text-muted">Cars</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">FAQs</a></li>
-          <li class="nav-item"><a href="contact.html" class="nav-link px-2 text-muted">About</a></li>
+          <li class="nav-item"><a href="main.php" class="nav-link px-2 text-muted">Home</a></li>
+          <li class="nav-item"><a href="cars.phpmain.php" class="nav-link px-2 text-muted">Cars</a></li>
+          <li class="nav-item"><a href="contact.phpmain.php" class="nav-link px-2 text-muted">FAQs</a></li>
+          <li class="nav-item"><a href="contact.phpmain.php" class="nav-link px-2 text-muted">About</a></li>
         </ul>
       </footer>
     </div>
