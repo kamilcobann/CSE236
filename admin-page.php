@@ -1,3 +1,19 @@
+<?php
+require_once('connect.php');
+session_start();
+
+$sql_users = "SELECT * FROM users";
+$result_users = mysqli_query($conn,$sql_users);
+$count_users = mysqli_num_rows($result_users);
+
+$sql_reservations = "SELECT * FROM reservations";
+$result_reservations = mysqli_query($conn,$sql_reservations);
+$count_reservations = mysqli_num_rows($result_reservations);
+
+$sql_cars = "SELECT * FROM cars";
+$result_cars = mysqli_query($conn,$sql_cars);
+$count_cars = mysqli_num_rows($result_cars);
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -57,7 +73,8 @@
               <h5 class="card-title text-center">Number of Users</h5>
               <div>
               <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2">975</p>
+              <p class="float-end mt-2"><?= $count_users ?></p>
+
               </div>
               <div class="text-center mt-5">
               <a href="admin-users.php" class="btn btn-primary">Go to Users</a>
@@ -71,7 +88,7 @@
               <h5 class="card-title text-center">Number of Reservations</h5>
               <div>
               <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2">10</p>
+                <p class="float-end mt-2"><?= $count_reservations ?></p>
               </div>
               <div class="text-center mt-5">
               <a href="admin-users.php" class="btn btn-primary">Go to Reservations</a>
@@ -85,7 +102,7 @@
               <h5 class="card-title text-center">Number of Cars</h5>
               <div>
               <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2">20</p>
+                <p class="float-end mt-2"><?= $count_cars?></p>
               </div>
               <div class="text-center mt-5">
               <a href="admin-cars.php" class="btn btn-primary">Go to Cars</a>

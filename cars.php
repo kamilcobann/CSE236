@@ -33,6 +33,7 @@
             $_SESSION["UID"] = $row['UID'];
             $_SESSION["firstname"] = $row['firstname'];
             $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["email"]=$row['email'];
             $_SESSION["loggedin"] = true;
 
 

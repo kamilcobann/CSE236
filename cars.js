@@ -326,7 +326,8 @@ function createCar(myCar){
 }
 
 function relocate_Admin(){
-    location.href = "admin-login.html";
+    window.location = ('admin-login.php') 
+
 }
 
 loginDOM = document.querySelector('#loginWindow');

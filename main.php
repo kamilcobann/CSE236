@@ -33,6 +33,7 @@
             $_SESSION["UID"] = $row['UID'];
             $_SESSION["firstname"] = $row['firstname'];
             $_SESSION["lastname"] = $row['lastname'];
+            $_SESSION["email"]=$row['email'];
             $_SESSION["loggedin"] = true;
 
 
@@ -50,6 +51,9 @@
   
 ?>
 
+<?php
+### DATETIME CHECK ###
+?>
 
 <!doctype html>
 <html lang="tr">
@@ -195,7 +199,7 @@
         <div class="container bg-success p-2 text-white mb-3">
             <div class="row">
                 
-                    <form class="form d-inline-flex row row-cols-3 mt-2">
+                    <form class="form d-inline-flex row row-cols-3 mt-2" method="POST">
                         
                         <div class="col mb-2">
                         <label class="form-label" for="rentDay">Rent Day:</label>
@@ -211,8 +215,8 @@
                             <label class="form-label" for="town">Town:</label>
                             <select name="town" class="form-control" id="town">
                                 <option value="kaş">Kaş</option>
-                                <option value="kemer">Kemer</option>
-                                <option value="konyaaltı">Konyaaltı</option>
+                                <option value="kemer">Kepez</option>
+                                <option value="konyaaltı">Merkez</option>
                                 <option value="manavgat">Manavgat</option>
                             </select>
                         </div>

@@ -4,10 +4,14 @@ $admin_email = $admin_password = $email = $password = "";
 $admin_email_err = $admin_password_err = $email_err = $password_err = "";
 require_once('connect.php');
 
-  session_start();
+session_start();
+if(isset($_SESSION["adminloggedin"])){
   if($_SESSION["adminloggedin"]==true){
     header("Location:admin-page.php");
   }
+}
+
+
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["email"]))){
       $email_err = "Please enter an email.";
