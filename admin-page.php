@@ -1,17 +1,21 @@
 <?php
-require_once('connect.php');
+require_once "connect.php";
 session_start();
+if (isset($_GET["adminlogout"])) {
+    session_destroy();
+    header("Location:main.php");
+}
 
 $sql_users = "SELECT * FROM users";
-$result_users = mysqli_query($conn,$sql_users);
+$result_users = mysqli_query($conn, $sql_users);
 $count_users = mysqli_num_rows($result_users);
 
 $sql_reservations = "SELECT * FROM reservations";
-$result_reservations = mysqli_query($conn,$sql_reservations);
+$result_reservations = mysqli_query($conn, $sql_reservations);
 $count_reservations = mysqli_num_rows($result_reservations);
 
 $sql_cars = "SELECT * FROM cars";
-$result_cars = mysqli_query($conn,$sql_cars);
+$result_cars = mysqli_query($conn, $sql_cars);
 $count_cars = mysqli_num_rows($result_cars);
 ?>
 <!doctype html>
@@ -48,7 +52,7 @@ $count_cars = mysqli_num_rows($result_cars);
           </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
               <li class="nav-item">
-                  <a href="main.php" class="mt-2 me-2 btn text-white">Sign out</a>
+              <a href="admin-page.php?adminlogout" class="mt-2 me-2 btn text-white">Sign out</a>
               </li>
               <li class="nav-item">
                   <p class="mt-3 me-3">Admin</p>
@@ -102,7 +106,7 @@ $count_cars = mysqli_num_rows($result_cars);
               <h5 class="card-title text-center">Number of Cars</h5>
               <div>
               <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2"><?= $count_cars?></p>
+                <p class="float-end mt-2"><?= $count_cars ?></p>
               </div>
               <div class="text-center mt-5">
               <a href="admin-cars.php" class="btn btn-primary">Go to Cars</a>

@@ -1,3 +1,142 @@
+<?php
+session_start();
+require_once "connect.php";
+if (isset($_GET["adminlogout"])) {
+    session_destroy();
+    header("Location:main.php");
+}
+
+function validator($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+#$target_dir = 'images/carImages/';
+#$target_file = $target_dir.basename($_FILES["image"]["name"]);
+#$uploadOk = 1;
+#$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+#
+#if(isset($_POST["submit"])){
+#  $check = getimagesize($_FILES["image"]['tmp_name']);
+#  if($check!==false){
+#    $uploadOk = 1;
+#  }else{
+#    $uploadOk = 0;
+#  }
+#}
+
+$brand = $model = $class = $branch = $statement = $plate = $image = "";
+$err = $brand_err = $model_err = $class_err = $branch_err = $statement_err = $plate_err = $image_err =
+    "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["addCar"])) {
+        if (empty(trim($_POST["brand"]))) {
+            $brand_err = "Brand cannot be empty";
+        } else {
+            $brand = validator($_POST["brand"]);
+        }
+
+        if (empty(trim($_POST["model"]))) {
+            $model_err = "Model cannot be empty";
+        } else {
+            $model = validator($_POST["model"]);
+        }
+
+        $class = $_POST["class"];
+        switch ($class) {
+            case "B-seg":
+                $class = 1;
+                break;
+            case "C-seg":
+                $class = 2;
+                break;
+            case "SUV":
+                $class = 3;
+                break;
+            case "S-seg":
+                $class = 4;
+                break;
+        }
+        $branch = $_POST["branch"];
+        switch ($branch) {
+            case "merkez":
+                $branch = 1;
+                break;
+            case "kaş":
+                $branch = 2;
+                break;
+            case "kepez":
+                $branch = 3;
+                break;
+            case "manavgat":
+                $branch = 4;
+                break;
+        }
+
+        if ($_POST["statement"] == "available") {
+            $statement = "1";
+        } else {
+            $statement = "0";
+        }
+
+        if (empty(trim($_POST["plate"]))) {
+            $plate_err = "Plate cannot be empty";
+        } else {
+            $plate = validator($_POST["plate"]);
+        }
+
+        if (empty(trim($_POST["image"]))) {
+            $image_err = "Please add image URL";
+        } else {
+            $image = $_POST["image"];
+        }
+
+        $sql = "SELECT plate FROM cars WHERE plate='$plate'";
+        $result = mysqli_query($conn, $sql);
+        $count = mysqli_num_rows($result);
+        if ($count > 0) {
+            $plate_err = "Plate exists";
+            $conn->close();
+        }
+
+        if (
+            empty($brand_err) &&
+            empty($model_err) &&
+            empty($plate_err) &&
+            empty($image_err)
+        ) {
+            $stmt = $conn->prepare("INSERT INTO cars(carbrand,carmodel,classID,
+    branchID,statement,plate,imageURL) VALUES (?,?,?,?,?,?,?)");
+            $stmt->bind_param(
+                "ssiiiss",
+                $brand,
+                $model,
+                $class,
+                $branch,
+                $statement,
+                $plate,
+                $image
+            );
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+            $_SESSION["formerr"] = "";
+            header("Location:admin-page.php");
+        } else {
+            $_SESSION["formerr"] = "Wrong or Missing information";
+            $_SESSION["brandError"] = $brand_err;
+            $_SESSION["modelError"] = $model_err;
+            $_SESSION["plateError"] = $plate_err;
+            $_SESSION["imageError"] = $image_err;
+            header("Location:admin-cars.php");
+        }
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,7 +171,7 @@
           </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
               <li class="nav-item">
-                  <a href="main.php" class="mt-2 me-2 btn text-white">Sign out</a>
+              <a href="admin-page.php?adminlogout" class="mt-2 me-2 btn text-white">Sign out</a>
               </li>
               <li class="nav-item">
                   <p class="mt-3 me-3">Admin</p>
@@ -56,20 +195,94 @@
                 <div class="filterButtons float-sm-start">
 
                 </div>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#addModal" onclick="addItem()" class="my-3 float-sm-end btn btn-outline-success">Add</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#addModal" class="my-3 float-sm-end btn btn-outline-success">Add</button>
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="addModalLabel">Add Car</h5>
+                          <h5 class="modal-title" id="addModalLabel">Add Car </h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          I WILL WRITE A FUNCTION
-                        </div>
-                        <div class="modal-footer">
+                          <form action="" method="post">
+                            <div class="my-2">
+                              <label for="brand" class="form-label">Car Brand : <?php if (
+                                  !empty($_SESSION["brandError"])
+                              ) {
+                                  echo '<span class="text-danger">' .
+                                      $_SESSION["brandError"] .
+                                      "</span>";
+                              } else {
+                                  echo "";
+                              } ?></label>
+                              <input type="text" class="form-control" name="brand" id="brand" value="<?= $brand ?>">
+                            </div>
+                            <div class="mb-2">
+                              <label for="model" class="form-label">Car Model : <?php if (
+                                  !empty($_SESSION["modelError"])
+                              ) {
+                                  echo '<span class="text-danger">' .
+                                      $_SESSION["modelError"] .
+                                      "</span>";
+                              } else {
+                                  echo "";
+                              } ?></label>
+                              <input type="text" class="form-control" name="model" id="model" value="<?= $model ?>">
+                            </div>
+                            <div class="mb-2">
+                            <label class="form-label" for="class">Car Class </label>
+                            <select name="class" class="form-control" id="class">
+                                <option value="B-seg">B-Segment</option>
+                                <option value="C-seg">C-Segment</option>
+                                <option value="SUV">SUV</option>
+                                <option value="S-seg">S-Segment</option>
+                            </select>
+                            </div>
+                            <div class="mb-2">
+                            <label class="form-label" for="branch">Branch </label>
+                            <select name="branch" class="form-control" id="branch">
+                                <option value="kaş">Kaş</option>
+                                <option value="kepez">Kepez</option>
+                                <option value="merkez">Merkez</option>
+                                <option value="manavgat">Manavgat</option>
+                            </select>
+                            </div>
+                            <div class="mb-2">
+                              <label for="statement" class="form-label">Statement</label>
+                              <select name="statement" id="statement" class="form-control">
+                                <option value="available">Available</option>
+                                <option value="not-available">Not Available</option>
+                              </select>
+                            </div>
+                            <div class="mb-2">
+                              <label for="plate" class="form-label">Plate : <?php if (
+                                  !empty($_SESSION["plateError"])
+                              ) {
+                                  echo '<span class="text-danger">' .
+                                      $_SESSION["plateError"] .
+                                      "</span>";
+                              } else {
+                                  echo "";
+                              } ?></label>
+                              <input type="text" class="form-control" name="plate" id="plate">
+                            </div>
+                            <div class="mb-2">
+                              <label for="image" class="form-label">Add Image URL : <?php if (
+                                  !empty($_SESSION["imageError"])
+                              ) {
+                                  echo '<span class="text-danger">' .
+                                      $_SESSION["imageError"] .
+                                      "</span>";
+                              } else {
+                                  echo "";
+                              } ?></label>
+                              <input type="text" name="image" class="form-control" id="image" >
+                              </div>
+                              <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-success">Add</button>
+                          <input type="submit" class="btn btn-success" name="addCar" value="Add">
+                        </div>
+                          </form>
                         </div>
                       </div>
                     </div>

@@ -303,7 +303,7 @@ function addItem(){
 
 
 function createCar(myCar){
-    return `
+   /* return `
     <tr>
         <th scope="col">${myCar.id}</th>
         <td><img src="${myCar.img}" width="200px" height="100px"></td>
@@ -353,7 +353,7 @@ function createCar(myCar){
                   </div>
         </td>
     </tr>
-    `;
+    `;*/
 }
 
 // MODAL ADD DELETE EDIT

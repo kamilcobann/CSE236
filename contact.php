@@ -1,116 +1,125 @@
 <?php
-  session_start();
+session_start();
 
-  if(isset($_GET["logout"])){
+if (isset($_GET["logout"])) {
     session_destroy();
-    header('Location:main.php');
-  }
-  require_once('connect.php');
+    header("Location:main.php");
+}
+require_once "connect.php";
 
-  $email = $password = $contact_email = $contact_phone ="";
-   $contact_firstname = $contact_lastname = $contact_message =  " ";
+$email = $password = $contact_email = $contact_phone = "";
+$contact_firstname = $contact_lastname = $contact_message = " ";
 
-  $email_err = $password_err = $contact_email_err = $contact_phone_err ="";
-  $contact_firstname_err = $contact_lastname_err = $contact_message_err ="";
-  $login_err=  "";
+$email_err = $password_err = $contact_email_err = $contact_phone_err = "";
+$contact_firstname_err = $contact_lastname_err = $contact_message_err = "";
+$login_err = "";
 
-  if($_SERVER["REQUEST_METHOD"]=="POST"){
-    if(empty(trim($_POST["email"]))){
-      $email_err = "Please enter an email";
-    }else{
-      $email = trim($_POST["email"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty(trim($_POST["email"]))) {
+        $email_err = "Please enter an email";
+    } else {
+        $email = trim($_POST["email"]);
     }
 
-    if(empty(trim($_POST["password"]))){
-      $password_err = "Please enter an password";
-    }else{
-      $password = trim($_POST["password"]);
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter an password";
+    } else {
+        $password = trim($_POST["password"]);
     }
 
-    if($_SESSION["loggedin"]==false){
-      if(empty(trim($_POST["contactFirstName"]))){
-        $contact_firstname_err="Please enter your first name";
-      }else{
-        $contact_firstname = trim($_POST["contactFirstName"]);
-     }
-    }else{
-      $contact_firstname = trim($_POST["contactFirstName"]);
-    }
-
-    if($_SESSION["loggedin"]==true){
-      $contact_lastname = $_SESSION["lastname"];
-    }elseif(empty(trim($_POST["contactLastName"]))){
-      $contact_lastname_err="Please enter your last name";
-    }else{
-      $contact_lastname = trim($_POST["contactLastName"]);
-    }
-
-
-    if($_SESSION["loggedin"]==false){
-      if(empty(trim($_POST["contactEmail"]))){
-        $contact_email_err="Please enter your email";
-      }else{
-        $contact_email = trim($_POST["contactEmail"]);
-     }
-    }else{
-      $contact_email = $_SESSION["email"];
-    }
-
-
-    if(empty(trim($_POST["contactPhone"]))){
-      $contact_phone_err="Please enter your phone";
-    }else{
-      $contact_phone = trim($_POST["contactPhone"]);
-    }
-
-    if(empty(trim($_POST["contactMessage"]))){
-      $contact_message_err="Please enter your message";
-    }else{
-      $contact_message= trim($_POST["contactMessage"]);
-    }
-
-
-    if(empty($email_err) && empty($password_err)){
-      $sql = "SELECT * FROM users WHERE email ='$email'";
-      $result = mysqli_query($conn,$sql);
-      $count = mysqli_num_rows($result);
-      if($count > 0){
-        while($row = $result->fetch_assoc()){
-          if($row['password']==md5($password)){
-            $_SESSION["UID"] = $row['UID'];
-            $_SESSION["firstname"] = $row['firstname'];
-            $_SESSION["lastname"] = $row['lastname'];
-            $_SESSION["email"]=$row['email'];
-            $_SESSION["loggedin"] = true;
-
-
-          }else{
-            $password_err = "Password is wrong";
-
-          }
+    if ($_SESSION["loggedin"] == false) {
+        if (empty(trim($_POST["contactFirstName"]))) {
+            $contact_firstname_err = "Please enter your first name";
+        } else {
+            $contact_firstname = trim($_POST["contactFirstName"]);
         }
-      }else{
-        $login_err="Invalid Account";
-      }
-      header("Location:main.php");
-    }elseif(empty($contact_firstname_err) && empty($contact_lastname_err) && empty($contact_phone_err)
-     && empty($contact_email_err) && empty($contact_message_err)){
-      $stmt = $conn->prepare("INSERT INTO contact (firstname,lastname,phone,email,message) VALUES (?,?,?,?,?) ");
-      $stmt->bind_param("sssss",$contact_firstname,$contact_lastname,$contact_phone,$contact_email,$contact_message);
-      $stmt->execute();
-      $stmt->close();
-      header("Location:main.php");
-    }else{
-      echo "Something went wrong";
+    } else {
+        $contact_firstname = trim($_POST["contactFirstName"]);
     }
-  }
-  
-  function validator($data){
+
+    if ($_SESSION["loggedin"] == true) {
+        $contact_lastname = $_SESSION["lastname"];
+    } elseif (empty(trim($_POST["contactLastName"]))) {
+        $contact_lastname_err = "Please enter your last name";
+    } else {
+        $contact_lastname = trim($_POST["contactLastName"]);
+    }
+
+    if ($_SESSION["loggedin"] == false) {
+        if (empty(trim($_POST["contactEmail"]))) {
+            $contact_email_err = "Please enter your email";
+        } else {
+            $contact_email = trim($_POST["contactEmail"]);
+        }
+    } else {
+        $contact_email = $_SESSION["email"];
+    }
+
+    if (empty(trim($_POST["contactPhone"]))) {
+        $contact_phone_err = "Please enter your phone";
+    } else {
+        $contact_phone = trim($_POST["contactPhone"]);
+    }
+
+    if (empty(trim($_POST["contactMessage"]))) {
+        $contact_message_err = "Please enter your message";
+    } else {
+        $contact_message = trim($_POST["contactMessage"]);
+    }
+
+    if (empty($email_err) && empty($password_err)) {
+        $sql = "SELECT * FROM users WHERE email ='$email'";
+        $result = mysqli_query($conn, $sql);
+        $count = mysqli_num_rows($result);
+        if ($count > 0) {
+            while ($row = $result->fetch_assoc()) {
+                if ($row["password"] == md5($password)) {
+                    $_SESSION["UID"] = $row["UID"];
+                    $_SESSION["firstname"] = $row["firstname"];
+                    $_SESSION["lastname"] = $row["lastname"];
+                    $_SESSION["email"] = $row["email"];
+                    $_SESSION["loggedin"] = true;
+                } else {
+                    $password_err = "Password is wrong";
+                }
+            }
+        } else {
+            $login_err = "Invalid Account";
+        }
+        header("Location:main.php");
+    } elseif (
+        empty($contact_firstname_err) &&
+        empty($contact_lastname_err) &&
+        empty($contact_phone_err) &&
+        empty($contact_email_err) &&
+        empty($contact_message_err)
+    ) {
+        $stmt = $conn->prepare(
+            "INSERT INTO contact (firstname,lastname,phone,email,message) VALUES (?,?,?,?,?) "
+        );
+        $stmt->bind_param(
+            "sssss",
+            $contact_firstname,
+            $contact_lastname,
+            $contact_phone,
+            $contact_email,
+            $contact_message
+        );
+        $stmt->execute();
+        $stmt->close();
+        header("Location:main.php");
+    } else {
+        echo "Something went wrong";
+    }
+}
+
+function validator($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
-  }
+}
 ?>
 
 <!doctype html>
@@ -148,7 +157,10 @@
             </li>
             
           </ul>
-          <?php  if(isset($_SESSION["loggedin"])&& $_SESSION["loggedin"]===true){?>
+          <?php if (
+              isset($_SESSION["loggedin"]) &&
+              $_SESSION["loggedin"] === true
+          ) { ?>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
               <li class="nav-item">
               <a href="main.php?logout" class="mt-2 me-2 btn text-white">Sign out</a>
@@ -165,7 +177,7 @@
               </li>
               
           </ul>
-          <?php }else { ?>
+          <?php } else { ?>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">
               <li class="nav-item">
                   <div class="btn text-white" onclick="popUpLogin()">Login</div>
@@ -179,12 +191,18 @@
                       <div class="text-center mt-3"><b>or</b></div>
                       <div class="form-group my-3 mx-3">
                         <input type="email" class="form-control" placeholder="Email" required="required" name="email" id="email"
-                        <?php echo (!empty($email_err)) ? 'is-invalid' : ''  ?>value="<?php echo $email?>" >
+                        <?php echo !empty($email_err)
+                            ? "is-invalid"
+                            : ""; ?>value="<?php echo $email; ?>" >
                         <span><?php echo $email_err; ?></span>
 
                       </div>
                       <div class="form-group mb-3 mx-3">
-                        <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password" <?php echo (!empty($password_err)) ? 'is-invalid' : ''  ?>value="<?php echo $password?>" >
+                        <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password" <?php echo !empty(
+                            $password_err
+                        )
+                            ? "is-invalid"
+                            : ""; ?>value="<?php echo $password; ?>" >
                         <span><?php echo $password_err; ?></span>
                       </div>
                       <div class="mb-3 ms-3 form-check">
@@ -290,13 +308,25 @@
                   <h3 class="text-center mb-3">Send an Email</h3>
                   <form class="mb-3" method="POST" action="">
                     <label for="contactFirstName" class="form-label mb-3">First Name</label>
-                    <input type="text" class="form-control" name="contactFirstName" id="contactFirstName"  <?php if(isset($_SESSION["firstname"])):?> value="<?php echo $_SESSION["firstname"];?>"<?php endif;?>>
+                    <input type="text" class="form-control" name="contactFirstName" id="contactFirstName"  <?php if (
+                        isset($_SESSION["firstname"])
+                    ): ?> value="<?php echo $_SESSION[
+     "firstname"
+ ]; ?>"<?php endif; ?>>
                     <label for="contactLastName" class="form-label my-3">Last Name</label>
-                    <input type="text" class="form-control" name="contactLastName" id="contactLastName" <?php if(isset($_SESSION["lastname"])):?> value="<?php echo $_SESSION["lastname"];?>"<?php endif;?>>
+                    <input type="text" class="form-control" name="contactLastName" id="contactLastName" <?php if (
+                        isset($_SESSION["lastname"])
+                    ): ?> value="<?php echo $_SESSION[
+     "lastname"
+ ]; ?>"<?php endif; ?>>
                     <label for="contactPhone" class="form-label my-3">Phone Number</label>
                     <input type="tel" class="form-control" name="contactPhone" id="contactPhone">
                     <label for="contactEmail" class="form-label my-3">E-Mail Address</label>
-                    <input type="email" class="form-control" name="contactEmail" id="contactEmail" <?php if(isset($_SESSION["email"])):?> value="<?php echo $_SESSION["email"];?>"<?php endif;?>>
+                    <input type="email" class="form-control" name="contactEmail" id="contactEmail" <?php if (
+                        isset($_SESSION["email"])
+                    ): ?> value="<?php echo $_SESSION[
+     "email"
+ ]; ?>"<?php endif; ?>>
                     <label for="contactMessage" class="form-label my-3">Message</label>
                     <textarea name="contactMessage" id="contactMessage" cols="3" class="form-control"></textarea>
                     <button class="btn btn-success btn-outline-warning float-end my-3" type="submit">Send</button>

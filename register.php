@@ -1,8 +1,8 @@
  <?php
 require_once('connect.php');
 
-$firstname = $lastname = $email = $password = $password_check = $licence = $gender = $bod = "";
-$firstname_err  =  $lastname_err = $email_err = $password_err = $password_check_err = $licence_err = $gender_err = $bod_err = "";
+$firstname = $lastname = $email = $password = $password_check = $licence = $gender = $bod = $phone =  "";
+$firstname_err  =  $lastname_err = $email_err = $password_err = $password_check_err = $licence_err = $gender_err = $bod_err = $phone_err =  "";
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
 
@@ -56,6 +56,13 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     }
   }
 
+  if(empty(trim($_POST["phone"]))){
+    $phone_err = "Phone required";
+  }else{
+    $phone = validator($_POST["phone"]);
+  }
+
+
   if(empty(trim($_POST["registerLicence"]))){
     $licence_err = "Please enter your licence";
   }else{
@@ -72,7 +79,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     $bod_err = "Birthday is required";
   }else{
     $now = date("d.m.y");
-    $bday = date_format(date_create($_POST["registerBirth"]),"d.m.y");
     $age = date_diff(date_create($_POST["registerBirth"]),date_create($now));
     if($age->y<18){
       $bod_err = "You must be older than 18";
@@ -81,20 +87,14 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     }
    
   }
-  if($age->y <18){
-    $bod_err = "You must be older than 18";
-  }else{
-    $bod = $_POST["registerBirth"];
-  }
- 
 
 
   if(empty($firstname_err) && empty($lastname_err) && empty($email_err) && empty($password_err) && empty($password_check_err) &&
   empty($licence_err) && empty($gender_err) && empty($bod_err)){
 
-    $stmt = $conn->prepare("INSERT INTO users (firstname,lastname,email,password,licence,gender,birthday) VALUES(?,?,?,?,?,?,?)");
+    $stmt = $conn->prepare("INSERT INTO users (firstname,lastname,email,password,licence,gender,birthday,phone) VALUES(?,?,?,?,?,?,?,?)");
     $md5 = md5($password);
-    $stmt->bind_param("sssssss",$firstname,$lastname,$email,$md5,$licence,$gender,$bod);
+    $stmt->bind_param("ssssssss",$firstname,$lastname,$email,$md5,$licence,$gender,$bod,$phone);
     $stmt->execute();
     $stmt->close();
     header("Location:main.php");
@@ -215,6 +215,10 @@ function validator($data){
             <div class="mb-3">
               <label for="registerPasswordCheck " class="form-label">Password Check</label>
               <input type="password" name="registerPasswordCheck" id="registerPasswordCheck" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" name="phone" id="phone" class="form-control">
             </div>
             <div class="mb-3">
               <label for="registerLicence " class="form-label">Driving Licence</label>

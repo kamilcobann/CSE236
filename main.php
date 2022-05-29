@@ -1,5 +1,12 @@
 <?php
   session_start();
+  
+  function validator($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
 
   if(isset($_GET["logout"])){
     session_destroy();
@@ -9,8 +16,11 @@
 
   $email = $password = "";
   $email_err = $password_err = $login_err = "";
+  $rent_day = $rent_time = $return_day = $return_time =$town = $segment= "";
+  $rent_date_err = $rent_time_err =$return_time_err = $return_date_err= $town_err = $segment_err = "";
 
   if($_SERVER["REQUEST_METHOD"]=="POST"){
+   
     if(empty(trim($_POST["email"]))){
       $email_err = "Please enter an email";
     }else{
@@ -35,7 +45,7 @@
             $_SESSION["lastname"] = $row['lastname'];
             $_SESSION["email"]=$row['email'];
             $_SESSION["loggedin"] = true;
-
+            $_SESSION["formError"] = "";
 
           }else{
             $password_err = "Password is wrong";
@@ -46,13 +56,104 @@
         $login_err="Invalid Account";
       }
       header("Location:main.php");
+    }else{
+      if(isset($_SESSION["loggedin"])){
+
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+    
+          if(empty(trim($_POST["rentDay"]))){
+            $rent_date_err = "Rent day cannot be empty";
+          }else{
+            $now=date('Y-m-d');
+            $now=explode("-",$now);
+            $tmp=explode("-",$_POST["rentDay"]);
+            
+            if(($tmp[0]==$now[0] && $tmp[1]==$now[1]) && $tmp[2]<$now[2]){
+              $rent_date_err = "Invalid date";
+            }elseif (($tmp[0]==$now[0] && $tmp[1]<$now[1])) {
+              $rent_date_err = "Invalid date";
+            }elseif ($tmp[0]<$now[0] ) {
+              $rent_date_err = "Invalid date";
+            }else{
+              $rent_day =$_POST["rentDay"];
+            }
+          }
+
+  
+          if(empty(trim($_POST["rentTime"]))){
+            $rent_time_err = "Time cannot be empty";
+          }else{
+            $now = date("H:i");
+            $now = explode(":",$now);
+            $tmp = explode(":",$_POST["rentTime"]);
+            if(($tmp[0]==($now[0]+"1")) && $tmp[1]<$now[1]){
+              $rent_time_err = "INVALID TIME";
+            }elseif ($tmp[0]<($now[0]+"1")) {
+              $rent_time_err = "INVALID TIME";
+            }
+          }
+    
+          if(empty(trim($_POST["returnDay"]))){
+            $return_date_err = "Return day cannot be empty";
+          }else{
+            $tmp1 = date($_POST["rentDay"]);
+            $tmp1 = explode("-",$tmp1);
+            $tmp2 = explode("-",$_POST["returnDay"]);
+            if(($tmp1[0]==$tmp2[0] && $tmp1[1]==$tmp2[1]) && $tmp2[2]<$tmp1[2]){
+              $return_date_err = "INVALID DATE";
+            }elseif (($tmp2[0]==$tmp1[0] && $tmp2[1]<$tmp1[1])) {
+              $return_date_err = "INVALID DATE";
+            }elseif($tmp2[0]<$tmp1[0]){
+              $return_date_err = "INVALID DATE";
+            }
+          }
+    
+    
+          if(empty(trim($_POST["returnTime"]))){
+            $return_time_err = "Time cannot be empty";
+          }else{
+            $return_time = $_POST["returnTime"];
+          }
+    
+          $town = $_POST["town"];
+          $segment = $_POST["segment"];
+
+    
+          if(empty($rent_date_err) && empty($rent_time_err)
+          && empty($return_date_err) && empty($return_time_err)){
+            $_SESSION["formError"]= "";
+            $_SESSION["rentDayError"] = "";
+            $_SESSION["rentTimeError"] = "";
+            $_SESSION["returnDayError"] = "";
+            $_SESSION["returnTimeError"] = "";
+            $_SESSION["rentDay"] = $rent_day;
+            $_SESSION["rentTime"] = $rent_time;
+            $_SESSION["returnDay"] = $return_day;
+            $_SESSION["returnTime"] = $return_time;
+            $_SESSION["town"] = $town;
+            $_SESSION["segment"] = $segment;
+            header('Location:reservation-cars.php');
+          }else{
+            $_SESSION["formError"]= "Invalid form credentials";
+            $_SESSION["rentDayError"] = $rent_date_err;
+            $_SESSION["rentTimeError"] = $rent_time_err;
+            $_SESSION["returnDayError"] = $return_date_err;
+            $_SESSION["returnTimeError"] = $return_time_err;
+            header('Location:main.php');
+          }
+    
+        }
+      }else{
+        echo "You need to sign in";
+        header("Locaiton:main.php");
+      }
     }
   }
   
 ?>
 
 <?php
-### DATETIME CHECK ###
+
 ?>
 
 <!doctype html>
@@ -202,17 +303,18 @@
                     <form class="form d-inline-flex row row-cols-3 mt-2" method="POST">
                         
                         <div class="col mb-2">
-                        <label class="form-label" for="rentDay">Rent Day:</label>
+                        <label class="form-label" for="rentDay">Rent Day: <?php if(!empty($_SESSION["rentDayError"])){echo '<span class="text-warning">'.$_SESSION["rentDayError"].'</span>';}else{ echo"";}?></label>
                         <input type="date" class="form-control" id="rentDay" name="rentDay">
+                        
                         </div>
     
                         <div class="col mb-2">
-                            <label class="form-label" for="rentTime">Rent Time:</label>
+                            <label class="form-label" for="rentTime">Rent Time: <?php if(!empty($_SESSION["rentTimeError"])){echo '<span class="text-warning">'.$_SESSION["rentTimeError"].'</span>';}else{ echo"";}?></label>
                             <input type="time" class="form-control" id="rentTime" name="rentTime">
                         </div>
 
                         <div class="col mb-2">
-                            <label class="form-label" for="town">Town:</label>
+                            <label class="form-label" for="town">Town: </label>
                             <select name="town" class="form-control" id="town">
                                 <option value="kaş">Kaş</option>
                                 <option value="kemer">Kepez</option>
@@ -222,18 +324,26 @@
                         </div>
     
                         <div class="col mb-3">
-                            <label class="form-label" for="returnDay">Return Day:</label>
+                            <label class="form-label" for="returnDay">Return Day: <?php if(!empty($_SESSION["returnDayError"])){echo '<span class="text-warning">'.$_SESSION["returnDayError"].'</span>';}else{ echo"";}?></label>
                             <input type="date" class="form-control" id="returnDay" name="returnDay">
                             </div>
                         <div class="col mb-3">
-                                <label class="form-label" for="returnTime">Rent Time:</label>
+                                <label class="form-label" for="returnTime">Return Time: <?php if(!empty($_SESSION["returnTimeError"])){echo '<span class="text-warning">'.$_SESSION["returnTimeError"].'</span>';}else{ echo"";}?></label>
                                 <input type="time" class="form-control" id="returnTime" name="returnTime">
                         </div>
                         
-                        <div class="col mt-4">
+                        <div class="col float-start mb-2">
+                        <label class="form-label" for="segment">Segment:</label>
+                            <select name="segment" class="form-control" id="segment">
+                                <option value="B-Segment">B-Segment</option>
+                                <option value="C-Segment">C-Segment</option>
+                                <option value="SUV">SUV</option>
+                                <option value="S-Segment">S-Segment</option>
+                            </select>
+                        </div> 
+                          <div class="col float-end">
                             <button class="btn btn-success btn-outline-warning">Rent a Car</button>
                         </div>
-                        
 
 
                     </form>
