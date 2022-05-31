@@ -27,127 +27,58 @@ function validator($data)
 #  }
 #}
 
-$brand = $model = $class = $branch =$carid = $statement = $plate = $image = $available =  "";
-$err = $brand_err = $model_err = $class_err = $branch_err = $available_err  = $statement_err = $plate_err = $image_err =$carid_err_bl = $carid_err_ac =
+
+
+$brand = $model = $class = $branch =$carid = $statement = $plate = $carresid =$image = $available =  "";
+$err = $brand_err = $model_err = $class_err = $branch_err = $available_err  =$carresiderr= $statement_err = $plate_err = $image_err =$carid_err_bl = $carid_err_ac =
     "";
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-        if (empty(trim($_POST["brand"]))) {
-            $brand_err = "Brand cannot be empty";
-        } else {
-            $brand = validator($_POST["brand"]);
-        }
+  if(empty(trim($_POST["reservatorUID"]))){
+    $carresiderr = "ERROR";
+  }else{
+    $id = trim($_POST["reservatorUID"]);
+  }
 
-        if (empty(trim($_POST["model"]))) {
-            $model_err = "Model cannot be empty";
-        } else {
-            $model = validator($_POST["model"]);
-        }
-
-        
-        if (empty(trim($_POST["activateCarID"]))) {
-            $carid_err_ac = "Model cannot be empty";
-        } else {
-            $carid = validator($_POST["activateCarID"]);
-        }
-
-        if (empty(trim($_POST["blockCarID"]))) {
-            $carid_err_bl = "Model cannot be empty";
-        } else {
-            $carid = validator($_POST["blockCarID"]);
-        }
-
-        $class = $_POST["class"];
-        switch ($class) {
-            case "B-seg":
-                $class = 1;
-                break;
-            case "C-seg":
-                $class = 2;
-                break;
-            case "SUV":
-                $class = 3;
-                break;
-            case "S-seg":
-                $class = 4;
-                break;
-        }
-        $branch = $_POST["branch"];
-        switch ($branch) {
-            case "merkez":
-                $branch = 1;
-                break;
-            case "kaş":
-                $branch = 2;
-                break;
-            case "kepez":
-                $branch = 3;
-                break;
-            case "manavgat":
-                $branch = 4;
-                break;
-        }
-
-        if ($_POST["statement"] == "available") {
-            $statement = "1";
-        } else {
-            $statement = "0";
-        }
-
-        if (empty(trim($_POST["plate"]))) {
-            $plate_err = "Plate cannot be empty";
-        } else {
-            $plate = validator($_POST["plate"]);
-        }
-
-        if (empty(trim($_POST["image"]))) {
-            $image_err = "Please add image URL";
-        } else {
-            $image = $_POST["image"];
-        }
-
-        $sql = "SELECT plate FROM cars WHERE plate='$plate'";
-        $result = mysqli_query($conn, $sql);
-        $count = mysqli_num_rows($result);
-        if ($count > 0) {
-            $plate_err = "Plate exists";
-            $conn->close();
-        }
-
-        if (
-            empty($brand_err) &&
-            empty($model_err) &&
-            empty($plate_err) &&
-            empty($image_err)
-        ) {
-            $stmt = $conn->prepare("INSERT INTO cars(carbrand,carmodel,classID,
-    branchID,statement,plate,imageURL) VALUES (?,?,?,?,?,?,?)");
-            $stmt->bind_param(
-                "ssiiiss",
-                $brand,
-                $model,
-                $class,
-                $branch,
-                $statement,
-                $plate,
-                $image
-            );
-            $stmt->execute();
-            $stmt->close();
-            $conn->close();
-            $_SESSION["formerr"] = "";
-            header("Location:admin-cars.php");
-        }elseif(empty($carid_err_ac)){
-            $sql = "UPDATE cars SET statement='1' WHERE carID='$carid'";
-            $result=$conn->query($sql);
-            header("Location:admin-cars.php");
-        }elseif(empty($carid_err_bl)){
-            $sql = "UPDATE cars SET statement='0' WHERE carID='$carid'";
-            $result=$conn->query($sql);
-            header("Location:admin-cars.php");
-        }
-        else {
+        if(empty($carresiderr)){
+            ?><table class='table'>
+    <thead>
+    <tr>
+    <th class='col' scope='col'>Reservation ID #</th>
+    <th class='col' scope='col'>User ID #</th>
+    <th class='col' scope='col'>Car ID #</th>
+    <th class='col' scope='col'>Reservation Day</th>
+    <th class='col' scope='col'>Reservation Time</th>
+    <th class='col' scope='col'>Return Day</th>
+    <th class='col' scope='col'>Return Time</th>
+    </tr>
+    </thead>
+    <?php
+            $sql = "SELECT * FROM reservations WHERE carID='$id'";
+            $result = $conn->query($sql);
+            if($result->num_rows > 0 ){
+                while($row=$result->fetch_assoc()){
+                    echo "
+                <tbody id='table-body'>
+                <tr><td>".
+                        $row["reservationID"].
+                        "</td><td>".
+                        $row["userID"].
+                        "</td><td>".
+                        $row["carID"].
+                        "</td><td>".
+                        $row["reservationDay"].
+                        "</td><td>".
+                        $row["reservationTime"].
+                        "</td><td>".
+                        $row["returnDay"].
+                        "</td><td>".
+                        $row["returnTime"].
+                        "</td></tr>";
+                }
+            }
+        }else {
             $_SESSION["formerr"] = "Wrong or Missing information";
             $_SESSION["brandError"] = $brand_err;
             $_SESSION["modelError"] = $model_err;
@@ -158,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 ?>
-
+</tdbody></table>
 <!doctype html>
 <html lang="en">
   <head>
@@ -435,6 +366,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                   <button type="submit" class="btn btn-outline-success" name="activate">Activate</button>
+                                </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#seeModal" class="my-3 ms-2 col-sm-1 float-sm-start btn btn-outline-success">See Reservations</button>
+                <div class="modal fade" id="seeModal" tabindex="-1" aria-labelledby="seeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="activateModalLabel">See all reservations</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="" method="POST">
+                            <input type="text" name="reservatorUID" id="reservatorUID" class="form-control my-2" placeholder="Car ID">
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-outline-success" name="seedetails">See</button>
                                 </div>
 
                       </div>

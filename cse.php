@@ -11,7 +11,14 @@ function validator($data)
     $data = htmlspecialchars($data);
     return $data;
 }
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if(empty(trim($_POST["reservatorUID"]))){
+    $err = "ERROR";
+  }else{
+    $idd = $_POST["reservatorUID"];
+  }
 if(empty($uid_err_reser)){
     ?><table class='table'>
     <thead>
@@ -26,7 +33,7 @@ if(empty($uid_err_reser)){
     </tr>
     </thead>
     <?php
-        $sql = "SELECT * FROM reservations AS r INNER JOIN users AS u ON r.userID=u.UID";
+        $sql = "SELECT * FROM reservations AS r INNER JOIN users AS u ON r.userID=u.UID WHERE UID='$idd'";
         $result = $conn->query($sql);
         if($result->num_rows>0 ){
             while($row=$result->fetch_assoc()){
