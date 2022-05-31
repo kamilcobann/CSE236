@@ -230,13 +230,7 @@
                         <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password" <?php echo (!empty($password_err)) ? 'is-invalid' : ''  ?>value="<?php echo $password?>" >
                         <span><?php echo $password_err; ?></span>
                       </div>
-                      <div class="mb-3 ms-3 form-check">
-                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                          <label class="form-check-label" for="exampleCheck1">Keep Signed In</label>
-                        </div>
-                      <div class="form-group float-start mb-3 mx-3">
-                        <a href="cars.phpmain.php" class="btn">Forgot Password?</a>
-                      </div>
+
                       <div class="form-group float-end mb-3 me-3">
                         <input type="submit" class="btn btn-outline-warning btn-success  btn-block" value="Login">
                       </div>
