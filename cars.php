@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </head>
   <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success p-2 text-white fixed-top">
       <div class="container-fluid">
           <a class="navbar-brand icon" href="main.php">
               <img src="images/car.png" alt="" width="60" height="60" class="d-inline-block align-text-top">
@@ -165,11 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="section-center row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
           justify-content-center">
 
-
-
-
-
-
           <?php
           $sql =" SELECT * FROM cars INNER JOIN class ON cars.classID = class.classID WHERE statement='1'";
           $result = $conn->query($sql);
@@ -198,8 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class='card-body'>
                   <h5 class='card-title'>".$row["carbrand"]." ".$row["carmodel"]."</h5>
                   <p class='card-text'>Segment : ".$row["className"]."<br>Now In : ".$town."</p>
-                  <h6>Price : ".$row["price"]." ₺</h6>
-                  <a href='#' class='btn btn-primary'>Go somewhere</a>
+                  <h6>Price : ".$row["price"]." ₺/per day</h6>
                 </div>
               </div></div>";
             }

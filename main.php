@@ -90,6 +90,8 @@
               $rent_time_err = "INVALID TIME";
             }elseif ($tmp[0]<($now[0]+"1")) {
               $rent_time_err = "INVALID TIME";
+            }else{
+              $rent_time=$_POST["rentTime"];
             }
           }
     
@@ -105,6 +107,8 @@
               $return_date_err = "INVALID DATE";
             }elseif($tmp2[0]<$tmp1[0]){
               $return_date_err = "INVALID DATE";
+            }else{
+              $return_day = $_POST["returnDay"];
             }
           }
     
@@ -310,10 +314,10 @@
                         <div class="col mb-2">
                             <label class="form-label" for="town">Town: </label>
                             <select name="town" class="form-control" id="town">
-                                <option value="kaş">Kaş</option>
-                                <option value="kemer">Kepez</option>
-                                <option value="konyaaltı">Merkez</option>
-                                <option value="manavgat">Manavgat</option>
+                                <option value="2">Kaş</option>
+                                <option value="3">Kepez</option>
+                                <option value="1">Merkez</option>
+                                <option value="4">Manavgat</option>
                             </select>
                         </div>
     
@@ -329,10 +333,10 @@
                         <div class="col float-start mb-2">
                         <label class="form-label" for="segment">Segment:</label>
                             <select name="segment" class="form-control" id="segment">
-                                <option value="B-Segment">B-Segment</option>
-                                <option value="C-Segment">C-Segment</option>
-                                <option value="SUV">SUV</option>
-                                <option value="S-Segment">S-Segment</option>
+                                <option value="1">B-Segment</option>
+                                <option value="2">C-Segment</option>
+                                <option value="3">SUV</option>
+                                <option value="4">S-Segment</option>
                             </select>
                         </div> 
                           <div class="col float-end">

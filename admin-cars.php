@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
             $conn->close();
             $_SESSION["formerr"] = "";
-            header("Location:admin-page.php");
+            header("Location:admin-cars.php");
         }elseif(empty($carid_err_ac)){
             $sql = "UPDATE cars SET statement='1' WHERE carID='$carid'";
             $result=$conn->query($sql);

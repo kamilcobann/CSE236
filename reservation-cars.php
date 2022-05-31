@@ -4,7 +4,21 @@ require_once "connect.php";
 
 if (!isset($_SESSION["loggedin"])) {
     header("Location:main.php");
+}elseif(isset($_GET["logout"])){
+  session_destroy();
+  header('Location:main.php');
+}elseif(isset($_GET["cart"])){
+  $_SESSION["car"]=$row["carbrand"];
+  header('Location:reservation-cart.php');
 }
+
+
+$rent_day = $_SESSION["rentDay"];
+$rent_time = $_SESSION["rentTime"];
+$return_day = $_SESSION["returnDay"]; 
+$return_time = $_SESSION["returnTime"];
+$branchID = $_SESSION["town"];
+$classID = $_SESSION["segment"]; 
 ?>
 
 <!DOCTYPE html>
@@ -109,8 +123,61 @@ if (!isset($_SESSION["loggedin"])) {
           <?php } ?>
         </div>
       </div>
-  </nav>
-  
+</nav>
+
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-sm-6 offset-3 border rounded-1">
+        <div class="row">
+          <div class="rent col">
+                          <div class="rent-Day my-2">Rent Day : <?= $rent_day ?></div>
+                          <div class="rent-Time mb-2">Rent Time : <?= $rent_time?></div>
+          </div>
+          <div class="return col">
+                          <div class="rent-Day my-2">Return Day : <?= $return_day ?></div>
+                          <div class="rent-Time mb-2">Return Time : <?= $return_time?></div>
+          </div>
+        </div>
+  </div>
+  </div>
+</div>
+                          <h3 class="text-center mt-2">Select Your Car</h3>
+<section class="menu my-5">
+          <div class="container mb-5">
+          <div class="section-center row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
+          justify-content-center">
+  <?php
+  $sql = "SELECT * FROM cars AS c
+  INNER JOIN class as cl ON c.classID = cl.classID
+  INNER JOIN branches as b ON c.branchID = b.branchID
+  WHERE (statement='1' AND b.branchID='$branchID' AND c.classID='$classID')";
+  $result=$conn->query($sql);
+
+  if($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+
+      echo 
+      "<div class='col mb-5'>
+      <div class='card h-100'>
+        <img src='".$row["imageURL"]."'width='300px' height='200px' class='card-img-top' alt=''>
+        <div class='card-body'>
+          <h5 class='card-title'>".$row["carbrand"]." ".$row["carmodel"]."</h5>
+          <p class='card-text'>Segment : ".$row["className"]."<br>Now In : ".$row["branchname"]."<br>Plate : ".$row["plate"]."</p>
+          <h6>Price : ".$row["price"]." ₺/per day</h6>
+          <a href='reservation-cars.php?cart' class='btn btn-primary'>Select</a>
+        </div>
+      </div></div>";
+    }
+  }else{
+    echo "Sorry :( We do not have the cars that you've been looking for.";
+  }
+
+  ?>
+
+  </div>
+  </div>
+</section>
 
   </body>
-</html>
+
+  </html>

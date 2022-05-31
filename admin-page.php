@@ -113,7 +113,7 @@ $count_cars = mysqli_num_rows($result_cars);
               <p class=" mt-2 fs-1"><?= $count_cars ?></p>
               </div>
               <div class="text-center mt-2">
-              <a href="admin-cars.php" class="btn btn-primary">Go to Users</a>
+              <a href="admin-cars.php" class="btn btn-primary">Go to Cars</a>
               </div>
             </div>
           </div>
