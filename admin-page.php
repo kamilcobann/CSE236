@@ -73,14 +73,14 @@ $count_cars = mysqli_num_rows($result_cars);
       <div class="row row-cols-2 row-cols-md-3">
         <div class="col">
           <div class="card">
-            <div class="card-body">
-              <h5 class="card-title text-center">Number of Users</h5>
+            <div class="card-body text-center">
+              <h5 class="card-title ">Number of Users</h5>
               <div>
-              <img src="/images/graph1.png" class="float-" alt="...">
-              <p class="float-end mt-2"><?= $count_users ?></p>
-
+              <img src="images/graph1.png" height="50px" width="50px" class="float-" alt="...">
+              <br>
+              <p class=" mt-2 fs-1"><?= $count_users ?></p>
               </div>
-              <div class="text-center mt-5">
+              <div class="text-center mt-2">
               <a href="admin-users.php" class="btn btn-primary">Go to Users</a>
               </div>
             </div>
@@ -88,28 +88,30 @@ $count_cars = mysqli_num_rows($result_cars);
         </div>
         <div class="col">
           <div class="card">
-            <div class="card-body">
-              <h5 class="card-title text-center">Number of Reservations</h5>
+            <div class="card-body text-center">
+              <h5 class="card-title ">Number of Reservations</h5>
               <div>
-              <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2"><?= $count_reservations ?></p>
+              <img src="images/resicon.png" height="50px" width="50px" class="float-" alt="...">
+              <br>
+              <p class=" mt-2 fs-1"><?= $count_reservations ?></p>
               </div>
-              <div class="text-center mt-5">
-              <a href="admin-users.php" class="btn btn-primary">Go to Reservations</a>
+              <div class="text-center mt-2">
+              <a href="admin-reservations.php" class="btn btn-primary">Go to Reservations</a>
               </div>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card">
-            <div class="card-body">
-              <h5 class="card-title text-center">Number of Cars</h5>
+            <div class="card-body text-center">
+              <h5 class="card-title ">Number of Cars</h5>
               <div>
-              <img src="/images/graph1.png" class="float-" alt="...">
-                <p class="float-end mt-2"><?= $count_cars ?></p>
+              <img src="images/graph3.png" height="50px" width="50px" alt="...">
+              <br>
+              <p class=" mt-2 fs-1"><?= $count_cars ?></p>
               </div>
-              <div class="text-center mt-5">
-              <a href="admin-cars.php" class="btn btn-primary">Go to Cars</a>
+              <div class="text-center mt-2">
+              <a href="admin-cars.php" class="btn btn-primary">Go to Users</a>
               </div>
             </div>
           </div>

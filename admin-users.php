@@ -2,7 +2,7 @@
 require_once "connect.php";
 $firstname = $lastname = $email = $password = $licence = $gender = $bod = $phone = $isactive =
     "";
-$firstname_err = $lastname_err = $email_err = $password_err = $licence_err = $gender_err = $bod_err = $phone_err = $uid_err =
+$firstname_err = $lastname_err = $email_err = $password_err = $licence_err = $gender_err = $bod_err = $phone_err = $uid_err_bl = $uid_err_ac = 
     "";
 function validator($data)
 {
@@ -82,10 +82,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $phone = validator($_POST["phone"]);
     }
-    if (empty(trim($_POST["uid"]))) {
+    if (empty(trim($_POST["blockUID"]))) {
         $uid_err_bl = "UID required";
     } else {
-        $uid = validator($_POST["uid"]);
+        $uid = validator($_POST["blockUID"]);
+    }
+
+
+    if(empty(trim($_POST["activateUID"]))){
+      $uid_err_ac= "UID required";
+    }else{
+      $uid = validator($_POST["activateUID"]);
     }
 
     if (
@@ -121,8 +128,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE users SET isactive='0' WHERE UID='$uid'";
         $result = $conn->query($sql);
         header("Location:admin-users.php");
-    } else {
-        echo "something went wrong";
+    } elseif(empty($uid_err_ac)) {
+      $sql = "UPDATE users SET isactive='1' WHERE UID='$uid'";
+      $result = $conn->query($sql);
+      header("Location:admin-users.php");
+    }else{
+      echo "Someting went wrong";
     }
 }
 ?>
@@ -309,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               "</td><td>" .
                               $row["firstname"] .
                               "</td><td>" .
-                              $row["lastname"] .
+                              strtoupper( $row["lastname"] ).
                               "</td><td>" .
                               $row["email"] .
                               "</td><td>" .
@@ -338,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="modal-body">
                           <form action="" method="POST">
-                            <input type="text" name="uid" id="uid" class="form-control my-2" placeholder="User ID">
+                            <input type="text" name="blockUID" id="blockUID" class="form-control my-2" placeholder="User ID">
                           </form>
                         </div>
                         <div class="modal-footer">
@@ -349,7 +360,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       </div>
                     </div>
                   </div>
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#activateModal" class="my-3 col-sm-1 float-sm-start btn btn-outline-info">Activate</button>
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#activateModal" class="my-3 ms-2 col-sm-1 float-sm-start btn btn-outline-success">Activate</button>
                 <div class="modal fade" id="activateModal" tabindex="-1" aria-labelledby="activateModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -359,12 +370,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="modal-body">
                           <form action="" method="POST">
-                            <input type="text" name="activate_uid" id="activate_uid" class="form-control my-2" placeholder="User ID">
+                            <input type="text" name="activateUID" id="activateUID" class="form-control my-2" placeholder="User ID">
                           </form>
                         </div>
                         <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                  <button type="submit" class="btn btn-outline-danger" name="activate">Activate</button>
+                                  <button type="submit" class="btn btn-outline-success" name="activate">Activate</button>
                                 </div>
 
                       </div>
@@ -382,7 +393,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
     
-    <script> function myAlert(){console.log('workss')}</script>
     <script src="admin-users.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 

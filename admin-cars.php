@@ -27,12 +27,12 @@ function validator($data)
 #  }
 #}
 
-$brand = $model = $class = $branch = $statement = $plate = $image = "";
-$err = $brand_err = $model_err = $class_err = $branch_err = $statement_err = $plate_err = $image_err =
+$brand = $model = $class = $branch =$carid = $statement = $plate = $image = $available =  "";
+$err = $brand_err = $model_err = $class_err = $branch_err = $available_err  = $statement_err = $plate_err = $image_err =$carid_err_bl = $carid_err_ac =
     "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["addCar"])) {
+    
         if (empty(trim($_POST["brand"]))) {
             $brand_err = "Brand cannot be empty";
         } else {
@@ -43,6 +43,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $model_err = "Model cannot be empty";
         } else {
             $model = validator($_POST["model"]);
+        }
+
+        
+        if (empty(trim($_POST["activateCarID"]))) {
+            $carid_err_ac = "Model cannot be empty";
+        } else {
+            $carid = validator($_POST["activateCarID"]);
+        }
+
+        if (empty(trim($_POST["blockCarID"]))) {
+            $carid_err_bl = "Model cannot be empty";
+        } else {
+            $carid = validator($_POST["blockCarID"]);
         }
 
         $class = $_POST["class"];
@@ -125,7 +138,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->close();
             $_SESSION["formerr"] = "";
             header("Location:admin-page.php");
-        } else {
+        }elseif(empty($carid_err_ac)){
+            $sql = "UPDATE cars SET statement='1' WHERE carID='$carid'";
+            $result=$conn->query($sql);
+            header("Location:admin-cars.php");
+        }elseif(empty($carid_err_bl)){
+            $sql = "UPDATE cars SET statement='0' WHERE carID='$carid'";
+            $result=$conn->query($sql);
+            header("Location:admin-cars.php");
+        }
+        else {
             $_SESSION["formerr"] = "Wrong or Missing information";
             $_SESSION["brandError"] = $brand_err;
             $_SESSION["modelError"] = $model_err;
@@ -133,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["imageError"] = $image_err;
             header("Location:admin-cars.php");
         }
-    }
+
 }
 ?>
 
@@ -297,18 +319,126 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <table class="table">
                     <thead>
                     <tr>
-                        <th class="col-sm-1" scope="col">Car ID #</th>
-                        <th class="col-sm-3" scope="col">Car Image</th>
-                        <th class="col-sm-3" scope="col">Car Model</th>
-                        <th class="col-sm-2" scope="col">Car Price</th>
-                        <th class="col-sm-1" scope="col">Gas Remaining (%)</th>
-                        <th class="col-sm-2" scope="col">Operation</th>
+                        <th class="col" scope="col">Car ID #</th>
+                        <th class="col" scope="col">Car Image</th>
+                        <th class="col" scope="col">Car Brand</th>
+                        <th class="col" scope="col">Car Model</th>
+                        <th class="col" scope="col">Class</th>
+                        <th class="col" scope="col">Plate</th>
+                        <th class="col" scope="col">Branch</th>
+                        <th class="col" scope="col">Statement</th>
                     </tr>
                 </thead>
-                <tbody id="table-body">
+                <tbody class="table-body">
+                              <?php
+                                $sql = "SELECT * FROM cars";
+                                $result=$conn->query($sql);
+                                if($result->num_rows >0){
+                                    while($row = $result->fetch_assoc()){
+                                        if($row["statement"] == 0){
+                                            $available = "Not Available";
+                                        }else{
+                                            $available = "Available";
+                                        }
 
+                                        switch ($row["branchID"]) {
+                                            case 1:
+                                                $town = "MERKEZ";
+                                                break;
+                                            case 2:
+                                                $town = "KAŞ";
+                                                break;
+                                            case 3:
+                                                $town = "KEPEZ";
+                                                break;
+                                            case 4:
+                                                $town = "MANAVGAT";
+                                                break;
+                                        }
+
+                                        switch ($row["classID"]) {
+                                            case 1:
+                                                $seg = "B-Segment";
+                                                break;
+                                            case 2:
+                                                $seg = "C-Segment";
+                                                break;
+                                            case 3:
+                                                $seg = "SUV";
+                                                break;
+                                            case 4:
+                                                $seg = "S-Segment";
+                                                break;
+                                        }
+
+                                        echo "<tr><td>" .
+                                        $row["carID"]   .
+                                        "</td><td><img src='" .
+                                        $row["imageURL"]."'
+                                        width='120px' height='100px'  alt='Image'>
+                                        </td><td>".
+                                        $row["carbrand"]   .
+                                        "</td><td>".
+                                        $row["carmodel"]   .
+                                        "</td><td>".
+                                        $seg  .
+                                        "</td><td>".
+                                        $row["plate"]   .
+                                        "</td><td>".
+                                        $town  .
+                                        "</td><td>".
+                                        $available   .
+                                        "</td></tr>";
+                                           
+                                    }
+                                }
+                              ?>
                 </tbody>
                 </table>
+                <div class="row">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#blockModal" class="my-3 col-sm-1 float-sm-end btn btn-outline-danger">Deactivate</button>
+                <div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="blockModalLabel">Deactivate Car</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="" method="POST">
+                            <input type="text" name="blockCarID" id="blockCarID" class="form-control my-2" placeholder="Car ID">
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-outline-danger" name="deactivate">Deactivate</button>
+                                </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#activateModal" class="my-3 ms-2 col-sm-1 float-sm-start btn btn-outline-success">Activate</button>
+                <div class="modal fade" id="activateModal" tabindex="-1" aria-labelledby="activateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="activateModalLabel">Activate Car</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="" method="POST">
+                            <input type="text" name="activateCarID" id="activateCarID" class="form-control my-2" placeholder="Car ID">
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-outline-success" name="activate">Activate</button>
+                                </div>
+
+                      </div>
+                    </div>
+                  </div>
+              </div>
             </div>
         </div>
     </div>
