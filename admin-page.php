@@ -47,7 +47,9 @@ $count_cars = mysqli_num_rows($result_cars);
             <li class="nav-item mx-3">
               <a class="nav-link text-white" href="admin-users.php">Users</a>
             </li>
-            
+            <li class="nav-item mx-3">
+                <a class="nav-link text-white" href="admin-reservations.php">Reservations</a>
+              </li>
 
           </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0 account ">

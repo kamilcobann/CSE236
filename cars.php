@@ -166,16 +166,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         <section class="menu my-5">
-          <div class="btn-container text-center mb-3 button-menu ">
-
-          </div>
-          <div class="btn-container text-center mb-3 button-menu bg-info">
-
-          </div>
           <div class="container mb-5">
           <div class="section-center row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4
           justify-content-center">
 
+
+
+
+
+
+          <?php
+          $sql =" SELECT * FROM cars INNER JOIN class ON cars.classID = class.classID WHERE statement='1'";
+          $result = $conn->query($sql);
+          if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+
+                switch ($row["branchID"]) {
+                  case 1:
+                      $town = "MERKEZ";
+                      break;
+                  case 2:
+                      $town = "KAŞ";
+                      break;
+                  case 3:
+                      $town = "KEPEZ";
+                      break;
+                  case 4:
+                      $town = "MANAVGAT";
+                      break;
+              }
+            
+              echo 
+              "<div class='col mb-5'>
+              <div class='card h-100'>
+                <img src='".$row["imageURL"]."'width='300px' height='200px' class='card-img-top' alt=''>
+                <div class='card-body'>
+                  <h5 class='card-title'>".$row["carbrand"]." ".$row["carmodel"]."</h5>
+                  <p class='card-text'>Segment : ".$row["className"]."<br>Now In : ".$town."</p>
+                  <h6>Price : ".$row["price"]." ₺</h6>
+                  <a href='#' class='btn btn-primary'>Go somewhere</a>
+                </div>
+              </div></div>";
+            }
+          }
+          ?>
 
           </div>
         </div>

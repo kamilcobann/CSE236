@@ -396,9 +396,9 @@
       </a>
         <ul class="nav col-md-4 justify-content-end">
           <li class="nav-item"><a href="main.php" class="nav-link px-2 text-muted">Home</a></li>
-          <li class="nav-item"><a href="cars.phpmain.php" class="nav-link px-2 text-muted">Cars</a></li>
-          <li class="nav-item"><a href="contact.phpmain.php" class="nav-link px-2 text-muted">FAQs</a></li>
-          <li class="nav-item"><a href="contact.phpmain.php" class="nav-link px-2 text-muted">About</a></li>
+          <li class="nav-item"><a href="cars.php" class="nav-link px-2 text-muted">Cars</a></li>
+          <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">FAQs</a></li>
+          <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-muted">About</a></li>
         </ul>
       </footer>
     </div>
